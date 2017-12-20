@@ -1,0 +1,34 @@
+Il file fragments_thrinks.py è costituito da circa 270 righe di codice.
+
+Nelle prime 90 c'è la definizione delle funzioni che serviranno per il resto
+del programma: inizializzazione delle vnf, creazione dei link, creazione domini,
+creazione delle vnf con le varie proprietà
+
+Dalla riga 100 fino alla 171 c'è il MAIN, dove vengono restituite le stampe
+contenenti la soluzione del problema, con il numero di nodi per ogni tipo.
+In questa sezione c'è anche la generazione della rete, vengono generati i nodi
+VNF e i relativi domini.
+
+[???] Vi è la "Request Genetation" provvederemo in seguito a capire cosa è.
+
+Dalla riga 172 fino alla fine del programma c'è la "Stringification" dove
+vengono formattate le stringe di output che verranno scritte nel file 'test.dnz'
+
+
+
+Considerazioni:
+1) Il programma non fa altro che settare certi valori --> vincoli
+2) ("Request Genetation" ???)
+3) Il risolutore penserà a creare i due array 'vnf_links' e 'vnfs',
+   contenenti rispettivamente i link tra i vari nodi e i nodi con
+   le varie caratteristiche (vnf).
+
+4) Vettore vnf_links => contiene i link tra tutte i nodi della rete. Due nodi sono
+   collegati se compaiono nel vettore come una coppia di numeri, corrispondenti
+   ai relativi indici, separati da una virgola. (e.g. vnf_links = [|6,1|1,6|...|2,6|])
+   Creato dalla funzione createVNFLinks.
+
+5) Vettore vnfs =>  Contiene i vettori che identificano i singoli nodi.
+   Ogni vettore/nodo è costituito da 8 valori. Il primo è l'indice del nodo.
+   L'ultimo valore è il dominio a cui appartiene il nodo.
+   creato come vettore di vettori dalla funzione   createVNFs
