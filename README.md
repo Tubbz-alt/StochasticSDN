@@ -4,6 +4,6 @@ A stochastic minizinc solution to solve a software defined network configigurati
 
 # Dipendences
 
-Minizinc
-Prova 
+Minizinc\n
+Prova\n 
 prova
