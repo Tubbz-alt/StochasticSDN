@@ -24,4 +24,4 @@ Depending on the size of the project, if it is small and simple enough the refer
 Describe and show how to run the tests with code examples.
 
 ## Contributors
-*Enrico Valguarnera*,*Davide Allevi*, *Cataldo Picciarelli*
+**Enrico Valguarnera**<br /> **Davide Allevi**<br /> **Cataldo Picciarelli**
