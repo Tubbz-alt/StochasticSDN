@@ -45,15 +45,17 @@ var 0..n_vnf: n_ep;
 %-------------------------------------------
 
 
-constraint n_border >= nd;  %numero dei vnf 'border' uguale al numero dei domini
-constraint n_ep <= nd;  %numero dei vnf 'endpoint' minore uguale al numero dei domini
+constraint n_border = nd;  %numero dei vnf 'border' uguale al numero dei domini
+constraint n_ep = nd;  %numero dei vnf 'endpoint' minore uguale al numero dei domini
 constraint n_wana + n_dpi + n_shaper >= nv - (n_border + n_ep); %il numero delle vnf deve essere minore o uguale alla somma dei rimanenti tipi di vnf (prova)
-constraint n_dpi >= 5;
-constraint n_wana >= 11;
-constraint n_shaper >= 4;
+constraint n_dpi >= 5 * nd;
+constraint n_wana >= 11 * nd;
+constraint n_shaper >= 4 * nd;
+
+ %TODO : definire il funzionamento dell'endopoint e quindi definire il vincolo
 
 %risolvo massimizzando quanti piu nodi possibili e per piu domini possibili
-solve maximize nv + nd;
+solve satisfy;
 
 output[
   "Number of domains:", show(nd),"\n",
