@@ -1,7 +1,7 @@
 %------------------------------------
 % PROGETTO INTELLIGIENZA ARITIFICIALE
 %------------------------------------
-%Soluzione stocastica in Minizinc per la risoluzione di una rete SDN (Software Defined Network).
+  %Soluzione stocastica in Minizinc per la risoluzione di una rete SDN (Software Defined Network).
 
 % Bozza Variabili minizinc:
 %   Domini
