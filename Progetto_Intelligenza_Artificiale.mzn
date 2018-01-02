@@ -12,7 +12,7 @@
 %   Peso dei collegamenti
 
 %-----------------------------------
-% VARIABILI
+% PARAMETERS
 %-----------------------------------
 
 %numero massimo di domini
@@ -21,22 +21,24 @@ int: n_domains = 15;
 %numero di vnf totali
 int: n_vnf = 120;
 
-%tipi di vnf
-int: dpi = 120; 
-int: wana = 120;
-int: shaper = 120;
-int: border = 120;
-int: endpoint = 120;
+% %tipi di vnf
+% int: dpi = 120; 
+% int: wana = 120;
+% int: shaper = 120;
+% int: border = 120;
+% int: endpoint = 120;
 
-
+%----------------------------------------------
+% DEICSION VARIABLES
+%----------------------------------------------
 var 5..n_domains: nd;  %numero dei domini compreso tra 5 e 10
 var 5..n_vnf: nv;
 
-var 5..dpi: n_dpi; %almeno 5 dpi
-var 10..wana: n_wana; %almeno 10 wana
-var 9..shaper: n_shaper; %almeno 9 shaper
-var 1..border: n_border; %almeno 1 border
-var 1..endpoint: n_ep; %almeno 1 endpoint
+var 0..n_vnf: n_dpi; 
+var 0..n_vnf: n_wana; 
+var 0..n_vnf: n_shaper; 
+var 1..n_vnf: n_border; %almeno 1 border
+var 0..n_vnf: n_ep; 
 
 %-------------------------------------------
 % VINCOLI
@@ -44,11 +46,16 @@ var 1..endpoint: n_ep; %almeno 1 endpoint
 
 
 constraint n_border = nd;  %numero dei vnf 'border' uguale al numero dei domini
-constraint n_ep = nd;  %numero dei vnf 'endpoint' uguale al numero dei domini
+constraint n_ep = nd;  %numero dei vnf 'endpoint' minore uguale al numero dei domini
 constraint n_wana + n_dpi + n_shaper >= nv - (n_border + n_ep); %il numero delle vnf deve essere minore o uguale alla somma dei rimanenti tipi di vnf (prova)
+constraint n_dpi >= 5 * nd;
+constraint n_wana >= 11 * nd;
+constraint n_shaper >= 4 * nd;
+
+ %TODO : definire il funzionamento dell'endopoint e quindi definire il vincolo
 
 %risolvo massimizzando quanti piu nodi possibili e per piu domini possibili
-solve maximize nv + nd;
+solve satisfy;
 
 output[
   "Number of domains:", show(nd),"\n",
