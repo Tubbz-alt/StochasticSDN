@@ -16,8 +16,17 @@ include "test.dzn";
 int: n_vnfs;
 int: start_domain;
 int: target_domain;
-int: M = 10;
-array[acc_request] of int: lista;  % E per gli array e matriciii???
+int: M;
+int: n_domains;
+int: num_vnf_links;
+
+array[1..3,1..2] of var int: acc_request; 
+array[1..3,1..2] of var int: dis_request; 
+array[1..15,1..15] of var int: domain_link_weights;
+array[1..3] of var int: service_request;
+array[1..15] of var int: domain_activated;
+array[1..num_vnf_links, 1..2] of var int: vnf_links;
+array[1..n_vnfs, 1..8] of var int: vnfs;
 
 
 % DEICSION VARIABLES
@@ -32,6 +41,15 @@ array[acc_request] of int: lista;  % E per gli array e matriciii???
 solve satisfy;
 
 output[
-    show(n_vnfs)
+%     "Number of vnf: " ++ show(n_vnfs) ++ "\n" ++
+%     "M :" ++ show(M) ++ "\n" ++
+    
+%     "Acc_request:[\t" ++
+%     join(", ",[show(domain_link_weights[i,j])|i in 1..15, j in 1..15]) ++
+%     "\t]"
+
+%Cosi si fa la stampa formattando in output la matrice per righe.
+      join(", ",[show(domain_link_weights[i,j])]) ++
+      if j == 15 then "\n" else " " endif | i,j in 1..15 
 ]
 
