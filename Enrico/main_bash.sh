@@ -5,6 +5,22 @@
 # 2) Dare in pasto in modo iterato il file al risolutore minizinc, in modo da
 #    trovare una serie di solizione per piu scenari.
 
-printf "Scenario 1:\n\n"  #prova stampa hello world
+DEL=+++++++++++++++++++++++++++++++++++++++++++
 
-python fragments_thrink.py
+for (( i = 1; i <= 3; i++ )); do
+  printf "$DEL\n\t\tSCENARIO  $i\t\t\n$DEL\n\n"  #prova stampa hello world
+
+  # Esecuzione dello script che crea il file .dzn, contenente le variabili che
+  # identificano la rete simulata.
+  # Ogni esecuzione e ogni set di varibiali identificano uno scenario differente.
+  python fragments_thrink.py
+
+  #Esecuzione del programma minizinc caricando il file .dzn
+  # TO-DO comando
+
+  # ATTENZIONE: POTREBBE CAPITARE DI DOVER SETTARE LA VARIABILE PATH..AGGIUNGENDO
+  # IL PATH DELLA CARTELLA MINIZINC 
+  mzn-g12mip /home/enrico/Documenti/AlmaMater/IA/progetto/StochasticSDN/Progetto_Intelligenza_Artificiale.mzn
+
+  printf '\n'
+done

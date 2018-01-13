@@ -34,8 +34,6 @@ array[1..n_vnfs, 1..8] of var int: vnfs;
 
 % VINCOLI
 
-constraint forall()()
-
 % La soluzione potrebbe essere, riprendendo l'obiettivo sopra spiegato,  minizzare la variabile che identifica i pesi tra domini. 
 % Quindi l'idea sarebbe di immagazzinare i links in un array e applicare il solve su di esso. 
 
