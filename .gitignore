@@ -1,6 +1,5 @@
-#specifies intentionally untracked files to ignore
-
 .*
+
 !/.gitignore
 
 Enrico/test.dzn
