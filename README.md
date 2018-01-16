@@ -4,7 +4,10 @@ A stochastic minizinc solution to solve a software defined network configigurati
 
 
 ## Synopsis
-In this project we conisider an hipothetical SDN (Software Defined Network). This network is composed by a certain number of domains, and into each domain there is a certain number of VNF (Virtual Network Function). This network represent a graph connected component and our goal is to minimize the links weight between two different domains.  
+In this project we conisider an hipothetical SDN (Software Defined Network). This network is composed by a certain number of domains, and into each one there is a certain number of VNF (Virtual Network Function). This network represent a graph connected component and our goal is to minimize the links weight between two different domains.
+In fragment_thrinks.py file a simulated net is created. This script generate test.dzn file containing all relative net features.
+The variables in test.dzn file are stored in Progetto_Intelligenza_Artificiale.mzn file.
+
 
 ## Dependencies
 - Python (at least 2.7.13 version)
