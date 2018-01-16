@@ -1,9 +1,0 @@
-Variabili minizinc:
-
-Domini
-Vnf
-Link itra-dominio
-Link inter-dominio
-Peso dei collegamenti
-
-

@@ -1,8 +1,0 @@
-OBIETTIVI:
-
-1. Continuazione definizione del problema.
-
-2. Costruire un programma MiniZinc funzionante che simuli
-	il corrispettivo scritto da Tong
-
-3. Provare a trasformare lo script in versione stocastica.
