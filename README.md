@@ -19,14 +19,11 @@ A short description of the motivation behind the creation and maintenance of the
 
 ## Installation
 
-**TODO**
-Provide code examples and explanations of how to get the project.
-
-## API Reference
-
-**TODO**
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
-
+To try this project need to install Minizinc package.
+You can run from MiniZinc IDE the Progetto_Intelligenza_Artificiale.mzn file or run from temrinal
+```bash
+mzn-g12mip <nomefile.dzn>
+```
 ## Tests
 
 **TODO**
