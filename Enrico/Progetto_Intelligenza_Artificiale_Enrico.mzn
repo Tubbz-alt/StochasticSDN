@@ -9,7 +9,7 @@
 
 
 % include del file contenente le caratteristiche della rete.
-include "test.dzn";cd 
+include "test.dzn";
 
 % PARAMETERS
 int: n_vnfs;
@@ -40,6 +40,6 @@ array[1..n_vnfs, 1..8] of var int: vnfs;
 solve satisfy;
 
 output["Prova:\n["]++[
-      join(", ",[show(domain_link_weights[i,j])]) ++
+      join("| ",[show(domain_link_weights[i,j])]) ++
       if j == 15 then "\n" else " " endif | i,j in 1..15 ]++
       ["]"]

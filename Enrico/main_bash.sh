@@ -19,8 +19,8 @@ for (( i = 1; i <= 3; i++ )); do
   # TO-DO comando
 
   # ATTENZIONE: POTREBBE CAPITARE DI DOVER SETTARE LA VARIABILE PATH..AGGIUNGENDO
-  # IL PATH DELLA CARTELLA MINIZINC 
-  mzn-g12mip /home/enrico/Documenti/AlmaMater/IA/progetto/StochasticSDN/Progetto_Intelligenza_Artificiale.mzn
+  # IL PATH DELLA CARTELLA MINIZINC
+  mzn-g12mip Progetto_Intelligenza_Artificiale_Enrico.mzn
 
   printf '\n'
 done
