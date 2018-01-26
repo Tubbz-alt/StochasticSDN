@@ -18,6 +18,8 @@ for (( i = 1; i <= 3; i++ )); do
   #Esecuzione del programma minizinc caricando il file .dzn
   # TO-DO comando
 
+  #prova git con Cata
+
   # ATTENZIONE: POTREBBE CAPITARE DI DOVER SETTARE LA VARIABILE PATH..AGGIUNGENDO
   # IL PATH DELLA CARTELLA MINIZINC
   mzn-g12mip Progetto_Intelligenza_Artificiale_Enrico.mzn
