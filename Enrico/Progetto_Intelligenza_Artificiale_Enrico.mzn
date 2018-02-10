@@ -5,7 +5,7 @@
 % Soluzione stocastica in Minizinc per la risoluzione di una rete SDN (Software Defined Network).
 
 % Obiettivo: trovare l'interconnessione tra domini con peso minore.
-% considerare il peso tra domini come variabile stocastica ed effettuare la conversione (da annotazione a file .mzn) 
+% considerare il peso tra domini come variabile stocastica ed effettuare la conversione (da annotazione a file .mzn)
 
 
 % include del file contenente le caratteristiche della rete.
@@ -19,8 +19,8 @@ int: M;
 int: n_domains;
 int: num_vnf_links;
 
-array[1..3,1..2] of var int: acc_request; 
-array[1..3,1..2] of var int: dis_request; 
+array[1..3,1..2] of var int: acc_request;
+array[1..3,1..2] of var int: dis_request;
 
 array[1..15,1..15] of var int: domain_link_weights;
 
@@ -34,12 +34,13 @@ array[1..n_vnfs, 1..8] of var int: vnfs;
 
 % VINCOLI
 
-% La soluzione potrebbe essere, riprendendo l'obiettivo sopra spiegato,  minizzare la variabile che identifica i pesi tra domini. 
-% Quindi l'idea sarebbe di immagazzinare i links in un array e applicare il solve su di esso. 
+%L'idea è quella di creare una variabile (parametro) stocastica per i pesi. Il singolo peso tra due domini cosi
+% è un valore aleatorio (compreso in un range finito). Si vuole trovare una soluzione per il cammino migliore attraverso
+%  tutti i domini della rete.
 
 solve satisfy;
 
-output["Prova:\n["]++[
+output["Domain_link_weights:\n["]++[
       join("| ",[show(domain_link_weights[i,j])]) ++
       if j == 15 then "\n" else " " endif | i,j in 1..15 ]++
       ["]"]

@@ -24,22 +24,22 @@ def createVNFs():
 		vnfs.append([idx+1,ENDPOINT, 0, 0, 0, 0, 1, i])
 	return vnfs
 
-def createDomainInfo():
-	# init active domains
-	active_domains =  random.sample(range(n_domains), n_domains/2)
-	active_domains.append(start_domain-1)
-	active_domains.append(target_domain-1)
-
-	# init domain costs
-	domain_costs = [[0 for x in range(n_domains)] for y in range(n_domains)]
-
-	for x in range(n_domains):
-		for y in range(n_domains):
-			if x < y:
-				tmpcost = random.randint(2, 8)
-				domain_costs[x][y] = tmpcost
-				domain_costs[y][x] = tmpcost
-	return active_domains,domain_costs
+# def createDomainInfo():
+# 	# init active domains
+# 	active_domains =  random.sample(range(n_domains), n_domains/2)
+# 	active_domains.append(start_domain-1)
+# 	active_domains.append(target_domain-1)
+#
+# 	# init domain costs
+# 	domain_costs = [[0 for x in range(n_domains)] for y in range(n_domains)]
+#
+# 	for x in range(n_domains):
+# 		for y in range(n_domains):
+# 			if x < y:
+# 				tmpcost = random.randint(2, 8)
+# 				domain_costs[x][y] = tmpcos	t
+# 				domain_costs[y][x] = tmpcost
+# 	return active_domains,domain_costs
 
 def createVNFproperties():
 
@@ -141,7 +141,7 @@ vnfs = createVNFs()
 n_vnfs = len(vnfs)
 
 # init domains
-active_domains,domain_costs = createDomainInfo()
+#active_domains,domain_costs = createDomainInfo()
 
 
 # assign properties: WANAs, DPI, SHAPER
@@ -192,15 +192,15 @@ plt.scatter(x_vnfs,y_vnfs)
 
 # stringfy active domains
 # ----------------------------
-str_active_domains = "[";
-for x in xrange(0,n_domains):
-	if x in active_domains:
-		str_active_domains += "1,"
-	else:
-		str_active_domains += "0,"
-#Need to clean up last character: the comma (edit by Enrico)
-str_active_domains = str_active_domains[:-1]
-str_active_domains += "]"
+# str_active_domains = "[";
+# for x in xrange(0,n_domains):
+# 	if x in active_domains:
+# 		str_active_domains += "1,"
+# 	else:
+# 		str_active_domains += "0,"
+# #Need to clean up last character: the comma (edit by Enrico)
+# str_active_domains = str_active_domains[:-1]
+# str_active_domains += "]"
 
 
 # stringfy acc
@@ -226,13 +226,13 @@ str_dis_range += "]"
 
 # stringfy domain link weights
 # ----------------------------
-str_domain_link_weights = "[|";
-for x in xrange(0,n_domains):
-	for y in xrange(0,n_domains):
-		str_domain_link_weights += str(domain_costs[x][y])+","
-	str_domain_link_weights = str_domain_link_weights[:-1]
-	str_domain_link_weights += "|"
-str_domain_link_weights += "]"
+# str_domain_link_weights = "[|";
+# for x in xrange(0,n_domains):
+# 	for y in xrange(0,n_domains):
+# 		str_domain_link_weights += str(domain_costs[x][y])+","
+# 	str_domain_link_weights = str_domain_link_weights[:-1]
+# 	str_domain_link_weights += "|"
+# str_domain_link_weights += "]"
 
 
 
@@ -265,9 +265,9 @@ out += "M = "+str(M)+";\n"
 out += "acc_request = "+str(str_acc_range)+";\n"
 out += "dis_request = "+str(str_dis_range)+";\n"
 out += "n_domains = "+str(n_domains)+";\n"
-out += "domain_link_weights = "+str(str_domain_link_weights)+";\n"
+#out += "domain_link_weights = "+str(str_domain_link_weights)+";\n"
 out += "service_request = [1,1,0];\n"
-out += "domain_activated = "+str_active_domains+";\n"
+#out += "domain_activated = "+str_active_domains+";\n"
 out += "num_vnf_links = "+str(num_vnf_links)+";\n"
 out += "vnf_links = "+str_vnf_link+";\n"
 out += "vnfs = "+str_vnf+";\n"
