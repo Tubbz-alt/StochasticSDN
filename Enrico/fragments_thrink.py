@@ -41,6 +41,13 @@ def createVNFs():
 # 				domain_costs[y][x] = tmpcost
 # 	return active_domains,domain_costs
 
+def createActivedDomainInfo():
+	# init active domains
+	active_domains =  random.sample(range(n_domains), n_domains/2)
+	active_domains.append(start_domain-1)
+	active_domains.append(target_domain-1)
+	return active_domains
+
 def createVNFproperties():
 
 	# --- DPI
@@ -142,7 +149,7 @@ n_vnfs = len(vnfs)
 
 # init domains
 #active_domains,domain_costs = createDomainInfo()
-
+active_domains = createActivedDomainInfo()
 
 # assign properties: WANAs, DPI, SHAPER
 vnfs = createVNFproperties()
@@ -192,15 +199,15 @@ plt.scatter(x_vnfs,y_vnfs)
 
 # stringfy active domains
 # ----------------------------
-# str_active_domains = "[";
-# for x in xrange(0,n_domains):
-# 	if x in active_domains:
-# 		str_active_domains += "1,"
-# 	else:
-# 		str_active_domains += "0,"
-# #Need to clean up last character: the comma (edit by Enrico)
-# str_active_domains = str_active_domains[:-1]
-# str_active_domains += "]"
+str_active_domains = "[";
+for x in xrange(0,n_domains):
+	if x in active_domains:
+		str_active_domains += "1,"
+	else:
+		str_active_domains += "0,"
+#Need to clean up last character: the comma (edit by Enrico)
+str_active_domains = str_active_domains[:-1]
+str_active_domains += "]"
 
 
 # stringfy acc
@@ -267,7 +274,7 @@ out += "dis_request = "+str(str_dis_range)+";\n"
 out += "n_domains = "+str(n_domains)+";\n"
 #out += "domain_link_weights = "+str(str_domain_link_weights)+";\n"
 out += "service_request = [1,1,0];\n"
-#out += "domain_activated = "+str_active_domains+";\n"
+out += "domain_activated = "+str_active_domains+";\n"
 out += "num_vnf_links = "+str(num_vnf_links)+";\n"
 out += "vnf_links = "+str_vnf_link+";\n"
 out += "vnfs = "+str_vnf+";\n"
