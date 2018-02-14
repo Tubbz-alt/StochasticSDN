@@ -10,7 +10,7 @@ DEL=+++++++++++++++++++++++++++++++++++++++++++
 # Creating simulated network.
 python fragments_thrink.py
 
-for (( i = 1; i <= 3; i++ )); do
+for (( i = 1; i <= 10; i++ )); do
   printf "$DEL\n\t\tSCENARIO  $i\t\t\n$DEL\n\n"
 
   # Generating new weights configuration

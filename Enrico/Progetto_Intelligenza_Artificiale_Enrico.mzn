@@ -38,6 +38,19 @@ var int: total_cost = sum(i in 1..n_domains, j in 1..n_domains where domain_link
 
 % VINCOLI
 
+%controllo sul dominio inziiale e finale --> devono essere attivi
+constraint assert(domain_activated[start_domain] == 1 /\domain_activated[target_domain] == 1 ,"Domain must be actived");
+
+% Controllo sui domini attivi. Se un dominio è attivo allora settare a 0 i link tra i e j , nella matrice domain_link_selection
+constraint 
+  forall(i,j in 1..n_domains where i < j) (
+    if domain_activated[ i ] == 0 then
+        domain_link_selection[i,j] = 0 /\ domain_link_selection[j,i] = 0
+     else 
+        domain_link_selection[i,j] = 1 /\ domain_link_selection[j,i] = 1
+     endif
+  );
+
 %L'idea è quella di creare una variabile (parametro) stocastica per i pesi. Il singolo peso tra due domini cosi
 % è un valore aleatorio (compreso in un range finito). Si vuole trovare una soluzione per il cammino migliore attraverso
 %  tutti i domini della rete.
@@ -45,9 +58,9 @@ var int: total_cost = sum(i in 1..n_domains, j in 1..n_domains where domain_link
 %solve satisfy;
 solve :: int_search([domain_link_selection[i,j] | i,j in 1..n_domains], first_fail, indomain, complete) minimize total_cost;
 
-% output["Domain_link_weights:\n["]++[
+%output["Domain_link_weights:\n["]++[
 %       join("| ",[show(domain_link_weights[i,j])]) ++
 %       if j == 15 then "\n" else " " endif | i,j in 1..15 ]++
-%       ["]"]
+%      ["]"]
 
-output[show(total_cost)]
+output[show(total_cost),"\n"]
