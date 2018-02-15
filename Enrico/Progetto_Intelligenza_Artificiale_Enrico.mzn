@@ -9,11 +9,12 @@
 
 
 % include del file contenente le caratteristiche della rete.
-include "test.dzn";
+include "simulated_net.dzn";
+include "scenarios_data.dzn";
 
 % PARAMETERS
 int: n_vnfs;
-int: start_domain;
+int: start_domain; 
 int: target_domain;
 int: M;
 int: n_domains;
@@ -22,13 +23,15 @@ int: num_vnf_links;
 array[1..3,1..2] of var int: acc_request;
 array[1..3,1..2] of var int: dis_request;
 
-array[1..n_domains,1..n_domains] of var int: domain_link_weights;
+array[1..n_domains,1..n_domains] of var int: domain_link_weights; 
 
 array[1..3] of var int: service_request;
 array[1..n_domains] of 0..1: domain_activated; % domains where lie the start and target vnf
 array[1..n_domains, 1..n_domains] of var 0..1: domain_link_selection;  % the resulting connection matrix
 array[1..num_vnf_links, 1..2] of var int: vnf_links;
 array[1..n_vnfs, 1..8] of var int: vnfs;
+
+
 
 
 % DEICSION VARIABLES
@@ -63,4 +66,4 @@ solve :: int_search([domain_link_selection[i,j] | i,j in 1..n_domains], first_fa
 %       if j == 15 then "\n" else " " endif | i,j in 1..15 ]++
 %      ["]"]
 
-output[show(total_cost),"\n"]
+output[show(total_cost),"\n", show(prob_matrix)]

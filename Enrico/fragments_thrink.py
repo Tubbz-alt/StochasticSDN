@@ -110,7 +110,7 @@ def createVNFLinks(vnfs,VNF_KEY_TYPE,BORDER,VNF_KEY_DOMAIN,WANA,SHAPER,DPI):
 # 	M A I N
 # ==============================================
 
-testFile = "test.dzn"
+testFile = "simulated_net.dzn"
 
 # VNF attribute KEYs
 VNF_KEY_ID = 0
