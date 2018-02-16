@@ -16,9 +16,13 @@ for k in range(n_scenarios):
 				distance[k][i][j] = tmpcost
 				distance[k][j][i] = tmpcost
 
-print("Matrice 3d:\n{}".format(distance))
+#print("Matrice 3d:\n{}".format(distance))
 
-#Stringification of probabilities
+array_prob = [0 for i in range(n_domains)]
+for i in range(n_scenarios):
+	array_prob[i] = random.uniform(1.0, 1.0)
+
+#Stringification of distance
 #-------------------------------------
 str_dist = "[|";
 for k in xrange(0,n_scenarios):
@@ -30,12 +34,19 @@ for k in xrange(0,n_scenarios):
 	str_dist += "|"
 str_dist += "]"
 
-print(len(str_dist))
 
+#Stringification of probabilities 
+#-------------------------------------
+
+str_active_domains = "[";
+for x in xrange(0,n_scenarios):
+	str_active_domains += str(array_prob[x])+","
+str_active_domains = str_active_domains[:-1]
+str_active_domains += "]"
 
 # String to write in testFile output
 out2 = "distance = " + str(str_dist)+";\n"
-
+out2 += "array_prob = " + str(str_active_domains)+";\n" 
 # TODO: CREATION OF PROBABILITIES ARRAY
 
 
