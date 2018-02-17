@@ -1,16 +1,16 @@
+include "globals.mzn";
 
+array[1..2,1..4] of float: pass = [|1.1,2.4,3.2,4.1|1.3,2.0,1.2,1.7|];
+array[1..2] of float: p = [0.4,0.6];
 
-array[1..2,1..6] of int: pass = [|1,2,3,4,5,6|7,8,9,10,11,12|];
-array[1..3] of var int: p = [1,1,1];
+array[1..2, 1..2, 1..2] of float: a = array3d(1..2, 1..2, 1..2, pass);
 
-array[1..2, 1..3, 1..3] of var int: a = array3d(1..2, 1..3, 1..3, pass);
-%function var float: expected(array[int,int,int] of int: w, array[int] of var int: p) = 
-  %sum (i in index_set_1of3(w), j in index_set_2of3(w), k in index_set_3of3(w)) (p[i]*w[k][i,j]) div sum(p);
+function var float: expected(array[int,int,int] of float: w, array[int] of float: p) = 
+  sum (k in index_set_1of3(w), i in index_set_2of3(w), j in index_set_3of3(w)) (p[i]*w[k,i,j]) / sum(p);
 
-%var float: res = expected(a,p);
+var float: res = expected(a,p);
 
+solve minimize res;
+%solve satisfy;
 
-%solve minimize res;
-solve satisfy;
-
-output[show(pass), show(a)]%, "\n", show(a[1,2]), show(res)]
+output[show(res),"\n",show_float(2, 2, res)]
