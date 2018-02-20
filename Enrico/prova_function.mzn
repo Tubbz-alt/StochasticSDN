@@ -2,8 +2,7 @@ include "globals.mzn";
 
 array[1..2,1..4] of float: pass = [|0,2.4,2.4,0|0,2.0,2.0,0|];
 array[1..2,1..4] of float: p_pass = [|0.4,0.4,0.4,0.4|0.6,0.6,0.6,0.6|];
-array[1..2, 1..2] of var 0..1: dls = [|1,0|1,1|];  % the resulting connection matrix
-array[1..2] of 0..1: domain_activated = [1, 1];  % domini attivi
+array[1..2] of 0..1: domain_activated = [1, 1];   % active domains
 array[1..2, 1..2] of var 0..1: domain_link_selection;  % the resulting connection matrix
 
 
@@ -12,7 +11,7 @@ array[1..2, 1..2, 1..2] of float: a = array3d(1..2, 1..2, 1..2, pass);
 array[1..2] of var float: prob = [0.4,0.6];
 array[1..2] of var float: exp_arr;
 
-% TODO vincolo che leghi matrice a con matrice dls. Giusto?
+%
 constraint forall(i,j in 1..2 where i < j) (
     if domain_activated[ i ] == 0 then
         domain_link_selection[i,j] = 0 /\ domain_link_selection[j,i] = 0
@@ -21,6 +20,7 @@ constraint forall(i,j in 1..2 where i < j) (
      endif
   );
   
+% 
 constraint forall(k,i,j in 1..2 where i < j) (
     if domain_link_selection[i,j] == 0 then
        a[k,i,j] = 0 /\ a[k,j,i] = 0
@@ -35,9 +35,9 @@ function var float: expected(array[int,int,int] of float: w, array[int,int,int] 
 
 % Calcolo del minimo tra le somme pesate calcolate.
 %function var float: risultato() =;
-%var float: res =  min( i in 1..2) (expected(a,p,i));
-solve minimize (expected(a,p,i))(i in 1..2);
-%solve satisfy;
+var float: res =  min( i in 1..2) (expected(a,p,i));
+%solve minimize (expected(a,p,i))(i in 1..2);
+solve minimize res;
 
 
 output["Mat1:\n"]++[

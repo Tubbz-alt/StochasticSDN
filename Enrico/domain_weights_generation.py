@@ -16,40 +16,54 @@ for k in range(n_scenarios):
 				distance[k][i][j] = tmpcost
 				distance[k][j][i] = tmpcost
 
-#print("Matrice 3d:\n{}".format(distance))
 
-array_prob = [0 for i in range(n_domains)]
+#Creation of 3d matrix containing probabilities. In each matrix there is a probability values.
+matrix_prob = [[0 for i in range(n_domains*n_domains)] for y in range(n_scenarios)]
+array_prob = [0 for i in range(n_scenarios)]
 for i in range(n_scenarios):
-	#array_prob[i] = random.uniform(1.0, 1.0)
-	array_prob[i] = random.randint(1,1)
+	prob = round(random.uniform(0.1, 1.0),2)
+	array_prob[i] = prob
+	for j in range(n_domains*n_domains):
+		matrix_prob[i][j] = prob
+
+
 #Stringification of distance
 #-------------------------------------
-str_dist = "[|";
+str_dist = "[|"
 for k in xrange(0,n_scenarios):
 	for i in xrange(0,n_domains):
 		for j in xrange(0,n_domains):
 			str_dist += str(distance[k][i][j])+","
 		str_dist = str_dist[:-1]
 		str_dist = str_dist + ','
+	str_dist = str_dist[:-1]
 	str_dist += "|"
 str_dist += "]"
 
+#Stringification of array probabilities
+str_array_prob = "["
+for i in range(n_scenarios):
+	str_array_prob += str(array_prob[i])+","
+str_array_prob = str_array_prob[:-1]
+str_array_prob += "]"
 
-#Stringification of probabilities
+
+#Stringification of matrix probabilities
 #-------------------------------------
-
-str_active_domains = "[";
-for x in xrange(0,n_scenarios):
-	str_active_domains += str(array_prob[x])+","
-str_active_domains = str_active_domains[:-1]
-str_active_domains += "]"
+str_matrix_prob = "[|"
+for i in xrange(0,n_scenarios):
+	for j in range(0,n_domains*n_domains):
+		str_matrix_prob += str(matrix_prob[i][j])+","
+	str_matrix_prob = str_matrix_prob[:-1]
+	str_matrix_prob += "|"
+str_matrix_prob += "]"
 
 # String to write in testFile output
-out2 = "distance = " + str(str_dist)+";\n"
-out2 += "array_prob = " + str(str_active_domains)+";\n"
-# TODO: CREATION OF PROBABILITIES ARRAY
 
+out = "distance = " + str(str_dist)+";\n"
+out += "matrix_prob = " + str(str_matrix_prob)+";\n"
+out += "array_prob = " + str(array_prob)+";\n"
 
 #write in file
 with open(testFile, 'w+') as outfile:
-	outfile.write(out2)
+	outfile.write(out)

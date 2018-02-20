@@ -130,7 +130,7 @@ DPI = 1;
 SHAPER = 3;
 M = 10;   # max domain cost
 n_domains = 15; #valore originario = 15
-
+n_scenarios = 3; #numero degli scenari
 # vnf range in domain
 #
 lb_domain_vnfs = 5
@@ -273,7 +273,7 @@ out += "acc_request = "+str(str_acc_range)+";\n"
 out += "dis_request = "+str(str_dis_range)+";\n"
 out += "n_domains = "+str(n_domains)+";\n"
 #out += "domain_link_weights = "+str(str_domain_link_weights)+";\n"
-	out += "service_request = [1,1,0];\n"
+out += "service_request = [1,1,0];\n"
 out += "domain_activated = "+str_active_domains+";\n"
 out += "num_vnf_links = "+str(num_vnf_links)+";\n"
 out += "vnf_links = "+str_vnf_link+";\n"
