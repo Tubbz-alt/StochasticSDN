@@ -1,9 +1,13 @@
 import random
 import os
-import sys
+import progress_bar as pb
+
 n_domains = 15
 n_scenarios = 3 #to simplify
 testFile = 'scenarios_data.dzn'
+
+#TODO definire tutte le funzioni e richiamarle sotto prima della strighification , come ha fatto tong
+
 
 #Creation of 3d structure containing the distance matrix (domain_link_weights configurations)
 distance = [[[0 for i in range(n_domains)] for y in range(n_domains)] for k in range(n_scenarios)]
@@ -63,6 +67,9 @@ str_matrix_prob += "]"
 out = "distance = " + str(str_dist)+";\n"
 out += "matrix_prob = " + str(str_matrix_prob)+";\n"
 out += "array_prob = " + str(array_prob)+";\n"
+
+print("Stiamo \"uscendo\" delle configurazioni per te...")
+pb.loading(0.1)
 
 #write in file
 with open(testFile, 'w+') as outfile:

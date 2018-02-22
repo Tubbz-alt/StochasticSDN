@@ -2,7 +2,7 @@
 # full gateway connection
 
 import glob
-import sys
+import progress_bar as pb
 import random
 
 #Il vettore vnfs contiene tutte le possibile vnf suddivise nei vari domini
@@ -129,10 +129,9 @@ WANA = 2;
 DPI = 1;
 SHAPER = 3;
 M = 10;   # max domain cost
-n_domains = 15; #valore originario = 15
-n_scenarios = 3; #numero degli scenari
-# vnf range in domain
-#
+n_domains = 15;
+n_scenarios = 3; #scenarios number
+
 lb_domain_vnfs = 5
 up_domain_vnfs = 10
 
@@ -154,7 +153,9 @@ active_domains = createActivedDomainInfo()
 # assign properties: WANAs, DPI, SHAPER
 vnfs = createVNFproperties()
 
-#conta tutti vnf di un certo tipo e stampa
+#Print the progress bar
+print("Stiamo simulando la rete...")
+pb.loading(0.2)
 #print "\nReport\n=========="
 print "number of DPI", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == DPI)
 print "number of WANA", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == WANA)
@@ -278,6 +279,7 @@ out += "domain_activated = "+str_active_domains+";\n"
 out += "num_vnf_links = "+str(num_vnf_links)+";\n"
 out += "vnf_links = "+str_vnf_link+";\n"
 out += "vnfs = "+str_vnf+";\n"
+
 
 with open(testFile, 'w+') as outfile:
 	outfile.write(out)
