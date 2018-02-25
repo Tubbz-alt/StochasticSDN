@@ -7,7 +7,6 @@
 % considerare il peso tra domini come variabile stocastica ed effettuare la conversione (da annotazione a file .mzn)
 
 % include del file contenente le caratteristiche della rete.
-include "globals.mzn";
 include "simulated_net.dzn";
 include "scenarios_data.dzn";
 
@@ -18,24 +17,27 @@ int: n_vnfs;
 int: start_domain;
 int: target_domain;
 int: M;
+array[1..3,1..2] of int: acc_request;
+array[1..3,1..2] of int: dis_request;
 int: n_domains;
-int: num_vnf_links;
-int: n_row_3d = n_domains*n_domains;
-int: n_scenarios = 3;
-array[1..3,1..2] of var int: acc_request;
-array[1..3,1..2] of var int: dis_request;
 array[1..3] of var int: service_request;
-array[1..n_domains] of 0..1: domain_activated; % domains where lie the start and target vnf
-array[1..n_domains, 1..n_domains] of var 0..1: domain_link_selection;  % the resulting connection matrix
-array[1..num_vnf_links, 1..2] of var int: vnf_links;
-array[1..n_vnfs, 1..8] of var int: vnfs;
+array[1..n_domains] of 0..1: domain_activated;
+int: num_vnf_links;
+array[1..num_vnf_links, 1..2] of int: vnf_links;
+array[1..n_vnfs, 1..8] of int: vnfs;
 
-array[1..3] of float: arr = [1,1,1];
+int: n_row_3d = n_domains*n_domains;
+int: n_scenarios;
+% domains where lie the start and target vnf
+array[1..n_domains, 1..n_domains] of var 0..1: domain_link_selection;  % the resulting connection matrix
+
+
+array[1..n_scenarios] of float: arr;
 
 % From scenarios_data.dzn
 array[1..n_scenarios, 1..n_row_3d] of float: distance; % Auxiliar matrix to create the array 3d congif_weights
 array[1..n_scenarios, 1..n_row_3d] of float: matrix_prob; % Probabilities matrix relative to several scenarios/weights configuration
-array[1..n_scenarios] of float: array_prob; % Probabilities array, containing prob for each scenario.
+%array[1..n_scenarios] of float: array_prob; % Probabilities array, containing prob for each scenario.
 % Distance matrix. This matrix contains several weights configuration for the same net topology
 array[1..n_scenarios, 1..n_domains, 1..n_domains] of float: config_weights =
       array3d(1..n_scenarios, 1..n_domains, 1..n_domains, distance);
@@ -63,49 +65,55 @@ constraint
      endif
   );
   
-%array[1..2,1..2] of float: prova = forall( i,j in 1..2)(config_weights[1,i,j]*domain_link_selection[i,j]);
-
-% Check domain link selection. If a link is inactive, set to 0 the relative weights in congif_weights.
-%constraint
-  %forall(k in 1..n_scenarios, i in 1..n_domains, j in 1..n_domains where i < j) (
-   %  if domain_link_selection[i,j] == 0 then
-   %  config_weights[k,i,j] = 0 /\ config_weights[k,j,i] = 0
-  %  else true
- % endif
-%);
 
 % Calculating weighted sum between config_weights matrix3d and probabilities array.
 function var float: expected(array[int,int,int] of float: w, array[int,int,int] of float: p, var int: index) =
-  sum (k in index_set_1of3(w), i in index_set_2of3(w), j in index_set_3of3(w)) (p[index,i,j]*w[index,i,j]*domain_link_selection[i,j]) / sum(arr);
+  sum (k in index_set_1of3(w), i in index_set_2of3(w), j in index_set_3of3(w) where i < j) (p[index,i,j]*w[index,i,j]*domain_link_selection[i,j]) / sum(arr);
 
 var float: res =  min( i in 1..n_scenarios) (expected(config_weights, matrix_probabilities,i));
 var float: res1 = expected(config_weights, matrix_probabilities, 1);
 var float: res2 = expected(config_weights, matrix_probabilities, 2);
 var float: res3 = expected(config_weights, matrix_probabilities, 3);
+var float: res4 = expected(config_weights, matrix_probabilities, 4);
+var float: res5 = expected(config_weights, matrix_probabilities, 5);
+var float: res6 = expected(config_weights, matrix_probabilities, 6);
+var float: res7 = expected(config_weights, matrix_probabilities, 7);
+var float: res8 = expected(config_weights, matrix_probabilities, 8);
+var float: res9 = expected(config_weights, matrix_probabilities, 9);
+var float: res10 = expected(config_weights, matrix_probabilities, 10);
 
-%solve minimize res;
 solve satisfy;
 
-output["Distance 1:\n["]++[
+output  ["Distance 1:\n["]++[
        join("| ",[show(config_weights[1,i,j])]) ++
       if j == 15 then "\n" else " " endif | i,j in 1..n_domains ]++
      ["]"] ++
      ["\nDistance 2:\n"]++[
       join("| ",[show(config_weights[2,i,j])]) ++
       if j == 15 then "\n" else " " endif | i,j in 1..n_domains ]++
-       ["]"] ++
+      ["]"] ++
         ["\nDistance 3:\n"]++[
       join("| ",[show(config_weights[3,i,j])]) ++
       if j == 15 then "\n" else " " endif | i,j in 1..n_domains ]++
        ["]"]++
+       ["\nDistance 6:\n"]++[
+      join("| ",[show(config_weights[6,i,j])]) ++
+      if j == 15 then "\n" else " " endif | i,j in 1..n_domains ]++
+      ["]"] ++
        ["\nDomain link selection:\n"]++[
       join("| ",[show(domain_link_selection[i,j])]) ++
       if j == 15 then "\n" else " " endif | i,j in 1..n_domains ]++
       
-       ["\nRes 1: ", show(res1)]++
-       ["\nRes 2: ", show(res2)]++
-       ["\nRes 3: ", show(res3)]++
-        ["\n\nRes: ", show(res)]
-       
+      ["\nRes 1: ", show_float(6,2,res1)]++
+      ["\nRes 2: ", show_float(6,2,res2)]++
+      ["\nRes 3: ", show_float(6,2,res3)]++
+      ["\nRes 4: ", show_float(6,2,res4)]++
+      ["\nRes 5: ", show_float(6,2,res5)]++
+      ["\nRes 6: ", show_float(6,2,res6)]++
+      ["\nRes 7: ", show_float(6,2,res7)]++
+      ["\nRes 8: ", show_float(6,2,res8)]++
+      ["\nRes 9: ", show_float(6,2,res9)]++
+      ["\nRes 10: ", show_float(6,2,res10)]++
+      ["\n\nRes: ", show_float(6,2,res)]
        
        

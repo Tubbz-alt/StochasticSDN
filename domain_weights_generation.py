@@ -3,7 +3,7 @@ import os
 import progress_bar as pb
 
 n_domains = 15
-n_scenarios = 3 #to simplify
+n_scenarios = 10 #to simplify
 testFile = 'scenarios_data.dzn'
 
 #TODO definire tutte le funzioni e richiamarle sotto prima della strighification , come ha fatto tong
@@ -23,12 +23,24 @@ for k in range(n_scenarios):
 
 #Creation of 3d matrix containing probabilities. In each matrix there is a probability values.
 matrix_prob = [[0 for i in range(n_domains*n_domains)] for y in range(n_scenarios)]
-array_prob = [0 for i in range(n_scenarios)]
+array_prob = [1 for i in range(n_scenarios)]
+
+#Creation of uniform array
+array1 = [0 for i in range(10)]
+for i in range(10):
+    array1[i] = random.uniform(0.1,1.0);
+#Creation of distributional array, dividing by sum each element of array 1
+somma = sum(array1)
+for i in range(10):
+    array1[i] = array1[i]/somma
+
+print(array1)
+
 for i in range(n_scenarios):
-	prob = round(random.uniform(0.1, 1.0),2)
-	array_prob[i] = prob
 	for j in range(n_domains*n_domains):
-		matrix_prob[i][j] = prob
+		matrix_prob[i][j] = array1[i]
+
+
 
 
 #Stringification of distance
@@ -63,10 +75,10 @@ for i in xrange(0,n_scenarios):
 str_matrix_prob += "]"
 
 # String to write in testFile output
-
-out = "distance = " + str(str_dist)+";\n"
+out = "n_scenarios = " + str(n_scenarios)+";\n"
+out += "distance = " + str(str_dist)+";\n"
 out += "matrix_prob = " + str(str_matrix_prob)+";\n"
-out += "array_prob = " + str(array_prob)+";\n"
+out += "arr = " + str(str_array_prob)+";\n"
 
 print("Stiamo \"uscendo\" delle configurazioni per te...")
 pb.loading(0.1)
