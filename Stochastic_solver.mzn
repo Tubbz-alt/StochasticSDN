@@ -2,17 +2,22 @@
 % PROGETTO INTELLIGIENZA ARITIFICIALE
 %------------------------------------
 
-% Soluzione stocastica in Minizinc per la risoluzione di una rete SDN (Software Defined Network).
-% Obiettivo: trovare l'interconnessione tra domini con peso minore.
-% considerare il peso tra domini come variabile stocastica ed effettuare la conversione (da annotazione a file .mzn)
+% Project:  stochastic solution for shortest-path problem in a Software Defined Network (SDN).
 
-% include del file contenente le caratteristiche della rete.
+% Goal: given an SDN network, with a fixed topology, we want to minimize the total interconnection cost between the domains
+
+% Consideration:  in a fisrt step, following the reference paper, annotations were made for stochastic variables.
+                   
+
+% include dzn file containing the simulated net and the scenarios data.
 include "simulated_net.dzn";
 include "scenarios_data.dzn";
 
-% PARAMETERS
+%--------------------------------------------------------------------------------------
+% PARAMETERS AND DECISION VARIABLES
 
-% From simulated_net.dzn
+
+% Data from simulated_net.dzn
 int: n_vnfs;
 int: start_domain;
 int: target_domain;
@@ -27,32 +32,31 @@ array[1..num_vnf_links, 1..2] of int: vnf_links;
 array[1..n_vnfs, 1..8] of int: vnfs;
 
 int: n_row_3d = n_domains*n_domains;
-int: n_scenarios;
-% domains where lie the start and target vnf
-array[1..n_domains, 1..n_domains] of var 0..1: domain_link_selection;  % the resulting connection matrix
 
-
-array[1..n_scenarios] of float: arr;
+% connection matrix of boolean values. 1 if link between two domains is active. 
+array[1..n_domains, 1..n_domains] of var 0..1: domain_link_selection; 
 
 % From scenarios_data.dzn
-array[1..n_scenarios, 1..n_row_3d] of float: distance; % Auxiliar matrix to create the array 3d congif_weights
-array[1..n_scenarios, 1..n_row_3d] of float: matrix_prob; % Probabilities matrix relative to several scenarios/weights configuration
-%array[1..n_scenarios] of float: array_prob; % Probabilities array, containing prob for each scenario.
-% Distance matrix. This matrix contains several weights configuration for the same net topology
+array[1..n_scenarios, 1..n_row_3d] of float: distance;     % Auxiliar matrix to create the array 3d congif_weights.
+array[1..n_scenarios, 1..n_row_3d] of float: matrix_prob; % Probabilities matrix relative to several scenarios/weights configuration.
+array[1..n_scenarios] of float: arr;                         % Array of probabilities. Need to weighted sum.
+int: n_scenarios;                                           % Number of scenarios.
+
+% Distance matrix. This matrix contains several weights configuration for the same net topology. 
+%Created starting from distance matrix.
 array[1..n_scenarios, 1..n_domains, 1..n_domains] of float: config_weights =
       array3d(1..n_scenarios, 1..n_domains, 1..n_domains, distance);
 
 % Probabilities matrix. This matrix contains one probability for each matrix.
+%Created starting from matrix_prob matrix.
 array[1..n_scenarios, 1..n_domains, 1..n_domains] of float:  matrix_probabilities  =
       array3d(1..n_scenarios, 1..n_domains, 1..n_domains, matrix_prob);
 
-% Objective to minimize
-%var int: total_cost = sum(i in 1..n_domains, j in 1..n_domains where config_weights[i,j] < M) (config_weights[i,j]* domain_link_selection[i,j] );
+%--------------------------------------------------------------------------------------
+% CONSTRAINTS
 
 
-% VINCOLI
-
-%controllo sul dominio inziiale e finale --> devono essere attivi
+%Checking for start and target domains. They must be active.
 constraint assert(domain_activated[start_domain] == 1 /\domain_activated[target_domain] == 1 ,"Domain must be actived");
 
 % Constraint over domain_link_selection. If a domain i is inactive, then deactivate links selection.
@@ -66,10 +70,12 @@ constraint
   );
   
 
-% Calculating weighted sum between config_weights matrix3d and probabilities array.
+% CORE FUNCTION: Calculating weighted sum between config_weights matrix3d and probabilities array.
 function var float: expected(array[int,int,int] of float: w, array[int,int,int] of float: p, var int: index) =
   sum (k in index_set_1of3(w), i in index_set_2of3(w), j in index_set_3of3(w) where i < j) (p[index,i,j]*w[index,i,j]*domain_link_selection[i,j]) / sum(arr);
 
+
+%float decision variables containing resulting 
 var float: res =  min( i in 1..n_scenarios) (expected(config_weights, matrix_probabilities,i));
 var float: res1 = expected(config_weights, matrix_probabilities, 1);
 var float: res2 = expected(config_weights, matrix_probabilities, 2);
@@ -82,8 +88,13 @@ var float: res8 = expected(config_weights, matrix_probabilities, 8);
 var float: res9 = expected(config_weights, matrix_probabilities, 9);
 var float: res10 = expected(config_weights, matrix_probabilities, 10);
 
+%Solving. Note that the minization is implemented in expected function.
 solve satisfy;
 
+
+% Printing: - three weights configuration matrix (scenario)
+%          - resulting values for each scenario
+%          - final value: minimum of scenarios total costs. 
 output  ["Distance 1:\n["]++[
        join("| ",[show(config_weights[1,i,j])]) ++
       if j == 15 then "\n" else " " endif | i,j in 1..n_domains ]++

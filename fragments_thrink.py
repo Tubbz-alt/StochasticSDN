@@ -1,12 +1,7 @@
-# vnf link list
-# full gateway connection
-
 import glob
 import progress_bar as pb
 import random
 
-#Il vettore vnfs contiene tutte le possibile vnf suddivise nei vari domini
-#
 def createVNFs():
 	#creo i domini
 	for i in xrange(1,n_domains+1):
@@ -24,22 +19,6 @@ def createVNFs():
 		vnfs.append([idx+1,ENDPOINT, 0, 0, 0, 0, 1, i])
 	return vnfs
 
-# def createDomainInfo():
-# 	# init active domains
-# 	active_domains =  random.sample(range(n_domains), n_domains/2)
-# 	active_domains.append(start_domain-1)
-# 	active_domains.append(target_domain-1)
-#
-# 	# init domain costs
-# 	domain_costs = [[0 for x in range(n_domains)] for y in range(n_domains)]
-#
-# 	for x in range(n_domains):
-# 		for y in range(n_domains):
-# 			if x < y:
-# 				tmpcost = random.randint(2, 8)
-# 				domain_costs[x][y] = tmpcos	t
-# 				domain_costs[y][x] = tmpcost
-# 	return active_domains,domain_costs
 
 def createActivedDomainInfo():
 	# init active domains
@@ -154,14 +133,14 @@ active_domains = createActivedDomainInfo()
 vnfs = createVNFproperties()
 
 #Print the progress bar
-print("Stiamo simulando la rete...")
-pb.loading(0.2)
+print("\nStiamo simulando la rete...")
+pb.loading(0.05)
 #print "\nReport\n=========="
-print "number of DPI", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == DPI)
-print "number of WANA", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == WANA)
-print "number of SHAPER", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == SHAPER)
-print "WANA in start domain ", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == WANA and vnf[VNF_KEY_DOMAIN] == start_domain)
-print "WANA in target domain ", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == WANA and vnf[VNF_KEY_DOMAIN] == target_domain)
+# print "number of DPI", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == DPI)
+# print "number of WANA", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == WANA)
+# print "number of SHAPER", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == SHAPER)
+# print "WANA in start domain ", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == WANA and vnf[VNF_KEY_DOMAIN] == start_domain)
+# print "WANA in target domain ", sum(1 for vnf in vnfs if vnf[VNF_KEY_TYPE] == WANA and vnf[VNF_KEY_DOMAIN] == target_domain)
 
 # create VNF links
 vnf_links = createVNFLinks(vnfs,VNF_KEY_TYPE,BORDER,VNF_KEY_DOMAIN,WANA,SHAPER,DPI)
@@ -191,7 +170,6 @@ x_vnfs = [x[0] for x in vnfs]
 y_vnfs = [y[-1] for y in vnfs]
 import matplotlib.pyplot as plt
 plt.scatter(x_vnfs,y_vnfs)
-#plt.show()
 
 # =======================================
 # 			Stringification
@@ -206,7 +184,6 @@ for x in xrange(0,n_domains):
 		str_active_domains += "1,"
 	else:
 		str_active_domains += "0,"
-#Need to clean up last character: the comma (edit by Enrico)
 str_active_domains = str_active_domains[:-1]
 str_active_domains += "]"
 
@@ -231,25 +208,11 @@ for x in xrange(0,len(dis_service_range)):
 	str_dis_range += "|"
 str_dis_range += "]"
 
-
-# stringfy domain link weights
-# ----------------------------
-# str_domain_link_weights = "[|";
-# for x in xrange(0,n_domains):
-# 	for y in xrange(0,n_domains):
-# 		str_domain_link_weights += str(domain_costs[x][y])+","
-# 	str_domain_link_weights = str_domain_link_weights[:-1]
-# 	str_domain_link_weights += "|"
-# str_domain_link_weights += "]"
-
-
-
 # stringfy link weights
 # ----------------------------
 str_vnf_link = "[|";
 for i in range(len(vnf_links)):
 	str_vnf_link += str(vnf_links[i][0])+","+str(vnf_links[i][1]) + "|"
-
 str_vnf_link = str_vnf_link[:-1]
 str_vnf_link += "|"
 str_vnf_link += "]"
@@ -273,13 +236,11 @@ out += "M = "+str(M)+";\n"
 out += "acc_request = "+str(str_acc_range)+";\n"
 out += "dis_request = "+str(str_dis_range)+";\n"
 out += "n_domains = "+str(n_domains)+";\n"
-#out += "domain_link_weights = "+str(str_domain_link_weights)+";\n"
 out += "service_request = [1,1,0];\n"
 out += "domain_activated = "+str_active_domains+";\n"
 out += "num_vnf_links = "+str(num_vnf_links)+";\n"
 out += "vnf_links = "+str_vnf_link+";\n"
 out += "vnfs = "+str_vnf+";\n"
-
 
 with open(testFile, 'w+') as outfile:
 	outfile.write(out)
