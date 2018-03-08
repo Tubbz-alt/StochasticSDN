@@ -2,9 +2,9 @@
 % PROGETTO INTELLIGIENZA ARITIFICIALE
 %------------------------------------
 
-% Project:  stochastic solution for shortest-path problem in a Software Defined Network (SDN).
+% Project:  stochastic solution for service-chaining problem in a Software Defined Network (SDN).
 
-% Goal: given an SDN network, with a fixed topology, we want to minimize the total interconnection cost between the domains
+% Goal: given an SDN network, with a fixed topology, we want to minimize the total interconnection cost between the domains.
 
 % Consideration:  in a fisrt step, following the reference paper, annotations were made for stochastic variables.
                    
@@ -39,7 +39,6 @@ array[1..n_domains, 1..n_domains] of var 0..1: domain_link_selection;
 % From scenarios_data.dzn
 array[1..n_scenarios, 1..n_row_3d] of float: distance;     % Auxiliar matrix to create the array 3d congif_weights.
 array[1..n_scenarios, 1..n_row_3d] of float: matrix_prob; % Probabilities matrix relative to several scenarios/weights configuration.
-array[1..n_scenarios] of float: arr;                         % Array of probabilities. Need to weighted sum.
 int: n_scenarios;                                           % Number of scenarios.
 
 % Distance matrix. This matrix contains several weights configuration for the same net topology. 
@@ -72,7 +71,7 @@ constraint
 
 % CORE FUNCTION: Calculating weighted sum between config_weights matrix3d and probabilities array.
 function var float: expected(array[int,int,int] of float: w, array[int,int,int] of float: p, var int: index) =
-  sum (k in index_set_1of3(w), i in index_set_2of3(w), j in index_set_3of3(w) where i < j) (p[index,i,j]*w[index,i,j]*domain_link_selection[i,j]) / sum(arr);
+  sum (k in index_set_1of3(w), i in index_set_2of3(w), j in index_set_3of3(w) where i < j) (p[index,i,j]*w[index,i,j]*domain_link_selection[i,j]) / n_scenarios;
 
 
 %float decision variables containing resulting 

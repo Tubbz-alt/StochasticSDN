@@ -38,13 +38,13 @@ def probability_distribution():
 	for i in range(n_scenarios):
 		for j in range(n_domains*n_domains):
 			matrix_prob[i][j] = array1[i]
-	return matrix_prob, array_prob
+	return matrix_prob
 
 #-------------------------------------
 # Calling functions
 
 scenarios_matrix = weight_configuration_matrix()
-probability_matrix, arr = probability_distribution()
+probability_matrix = probability_distribution()
 
 
 #-------------------------------------
@@ -61,12 +61,12 @@ for k in xrange(0,n_scenarios):
 	str_dist += "|"
 str_dist += "]"
 
-#Stringification of array probabilities
-str_array_prob = "["
-for i in range(n_scenarios):
-	str_array_prob += str(arr[i])+","
-str_array_prob = str_array_prob[:-1]
-str_array_prob += "]"
+# #Stringification of array probabilities
+# str_array_prob = "["
+# for i in range(n_scenarios):
+# 	str_array_prob += str(arr[i])+","
+# str_array_prob = str_array_prob[:-1]
+# str_array_prob += "]"
 
 
 #Stringification of matrix probabilities
@@ -84,7 +84,7 @@ str_matrix_prob += "]"
 out = "n_scenarios = " + str(n_scenarios)+";\n"
 out += "distance = " + str(str_dist)+";\n"
 out += "matrix_prob = " + str(str_matrix_prob)+";\n"
-out += "arr = " + str(str_array_prob)+";\n"
+#out += "arr = " + str(str_array_prob)+";\n"
 
 print("Stiamo \"uscendo\" delle configurazioni per te...")
 pb.loading(0.05)
