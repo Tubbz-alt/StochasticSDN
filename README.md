@@ -20,12 +20,12 @@ These file will be the input files in Minizinc model.
 
 ## Installation
 To try this project need to install Minizinc package.
-You can run from MiniZinc IDE the Progetto_Intelligenza_Artificiale.mzn file or run from temrinal
+Arfet you have runned fragment_thrinks.py and domain_weights_generation.py files, you can run from MiniZinc IDE the Stochestic_solver.mzn file or run from temrinal
 ```bash
 mzn-g12mip <file.mzn> <file.dzn>
 ```
-You can also try to run main_bash.sh script in Enrico folder. 
-This script iterate Progetto_Intelligenza_artificiale.mzn file for multiple scenarios.
+You can also try to run main_bash.sh script.
+This script run all file and give you the result.
 
 
 ## Contributors
