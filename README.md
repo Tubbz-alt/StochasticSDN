@@ -1,13 +1,17 @@
 # StochasticSDN
 
-A stochastic minizinc solution to solve a software defined network configiguration problem
+A stochastic minizinc solution to solve a software defined network configuration problem
 
 
 ## Synopsis
-In this project we conisider an hipothetical SDN (Software Defined Network). This network is composed by a certain number of domains, and into each one there is a certain number of VNF (Virtual Network Function). This network represent a graph connected component and our goal is to minimize the links weight between two different domains.
+In this project we conisider a simulated SDN net (Software Defined Network). This network is composed by a certain number of domains, and into each one there is a certain number of VNF (Virtual Network Function). VNF will be ignored in this project beacause are not study objective. This network represent a graph connected component and our goal is to minimize the links weight between two different domains.
 In fragment_thrinks.py file a simulated net is created. This script generate test.dzn file containing all relative net features.
-The variables in test.dzn file are stored in Progetto_Intelligenza_Artificiale.mzn file.
+In domain_weights_generation.py file a bunch of scenarios is simulated. This process create ten weight configurations for the same net topology.
+Output: 
+- fragment_thrinks.py script give in output simulated.net.dzn file
+- domain_weights_generation.py script give scenarios_data.dzn file
 
+These file will be the input files in Minizinc model.
 
 ## Dependencies
 - Python (at least 2.7.13 version)
