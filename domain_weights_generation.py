@@ -14,7 +14,7 @@ def weight_configuration_matrix():
 		for j in range(n_domains):
 			for i in range(n_domains):
 				if i < j:
-					tmpcost = random.randint(2, 8)
+					tmpcost = random.randint(2, 10)
 					distance[k][i][j] = tmpcost
 					distance[k][j][i] = tmpcost
 	return distance

@@ -71,7 +71,7 @@ constraint
 
 % CORE FUNCTION: Calculating weighted sum between config_weights matrix3d and probabilities array.
 function var float: expected(array[int,int,int] of float: w, array[int,int,int] of float: p, var int: index) =
-  sum (k in index_set_1of3(w), i in index_set_2of3(w), j in index_set_3of3(w) where i < j) (p[index,i,j]*w[index,i,j]*domain_link_selection[i,j]) / n_scenarios;
+  sum (i in index_set_2of3(w), j in index_set_3of3(w) where i < j) (p[index,i,j]*w[index,i,j]*domain_link_selection[i,j]);
 
 
 %float decision variables containing resulting 
@@ -106,8 +106,8 @@ output  ["Distance 1:\n["]++[
       join("| ",[show(config_weights[3,i,j])]) ++
       if j == 15 then "\n" else " " endif | i,j in 1..n_domains ]++
        ["]"]++
-       ["\nDistance 6:\n"]++[
-      join("| ",[show(config_weights[6,i,j])]) ++
+       ["\nDistance 9:\n"]++[
+      join("| ",[show(config_weights[9,i,j])]) ++
       if j == 15 then "\n" else " " endif | i,j in 1..n_domains ]++
       ["]"] ++
        ["\nDomain link selection:\n"]++[
