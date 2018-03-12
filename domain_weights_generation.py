@@ -26,18 +26,18 @@ def probability_distribution():
 	array_prob = [1 for i in range(n_scenarios)]
 
 	#Creation of uniform array
-	array1 = [0 for i in range(10)]
+	dist_prob = [0 for i in range(10)]
 	for i in range(10):
-	    array1[i] = random.uniform(0.1,1.0);
+	    dist_prob[i] = random.uniform(0.1,1.0);
 
-	#Creation of distributional array, dividing by sum each element of array 1
-	somma = sum(array1)
+	#Creation of distributional array, dividing by sum each element of dist_prob
+	somma = sum(dist_prob)
 	for i in range(10):
-	    array1[i] = array1[i]/somma
+	    dist_prob[i] = dist_prob[i]/somma
 
 	for i in range(n_scenarios):
 		for j in range(n_domains*n_domains):
-			matrix_prob[i][j] = array1[i]
+			matrix_prob[i][j] = dist_prob[i]
 	return matrix_prob
 
 #-------------------------------------
